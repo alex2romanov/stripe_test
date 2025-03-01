@@ -29,7 +29,7 @@
     </div>
 
     <script>
-        const stripe = Stripe("YOUR_STRIPE_PUBLIC_KEY"); // Вставьте ваш API ключ
+        const stripe = Stripe("pk_test_51QxrOUGmxOvkyo74DUxSQsKdmZpNHTjkkbbePuSY2Ed1shgN8T6NKa9GGERNiRVxZdcNJ9y2ax8G1DSgOjKXfkbA009cfswfsU"); // Вставьте ваш API ключ
 
         async function pay(amount, product) {
             const response = await fetch("/create-checkout-session", {
