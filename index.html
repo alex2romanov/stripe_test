@@ -30,9 +30,9 @@
 
     <script>
         const stripe = Stripe("pk_test_51QxrOUGmxOvkyo74DUxSQsKdmZpNHTjkkbbePuSY2Ed1shgN8T6NKa9GGERNiRVxZdcNJ9y2ax8G1DSgOjKXfkbA009cfswfsU"); // Вставьте ваш API ключ
-
+        const BACKEND_URL = 'https://bike-shop-backend-2l3f.onrender.com'
         async function pay(amount, product) {
-            const response = await fetch("/create-checkout-session", {
+            const response = await fetch("${BACKEND_URL}/create-checkout-session", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ amount, product })
