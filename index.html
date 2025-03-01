@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Shop</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        .product { border: 1px solid #ddd; padding: 15px; margin: 10px; display: inline-block; }
+        .button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>Bike Shop</h1>
+    <p>Choose your bike and pay online!</p>
+
+    <div class="product">
+        <h2>Mountain Bike</h2>
+        <p>Price: $500</p>
+        <button class="button" onclick="pay(500, 'Mountain Bike')">Buy</button>
+    </div>
+
+    <div class="product">
+        <h2>Road Bike</h2>
+        <p>Price: $700</p>
+        <button class="button" onclick="pay(700, 'Road Bike')">Buy</button>
+    </div>
+
+    <script>
+        const stripe = Stripe("YOUR_STRIPE_PUBLIC_KEY"); // Вставьте ваш API ключ
+
+        async function pay(amount, product) {
+            const response = await fetch("/create-checkout-session", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount, product })
+            });
+            const session = await response.json();
+            stripe.redirectToCheckout({ sessionId: session.id });
+        }
+    </script>
+
+</body>
+</html>
