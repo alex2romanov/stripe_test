@@ -29,17 +29,31 @@
     </div>
 
     <script>
-        const stripe = Stripe("pk_test_51QxrOUGmxOvkyo74DUxSQsKdmZpNHTjkkbbePuSY2Ed1shgN8T6NKa9GGERNiRVxZdcNJ9y2ax8G1DSgOjKXfkbA009cfswfsU"); // Вставьте ваш API ключ
-        const BACKEND_URL = 'https://bike-shop-backend-2l3f.onrender.com'
+        const BACKEND_URL = "https://bike-shop-backend-2l3f.onrender.com";
+
         async function pay(amount, product) {
-            const response = await fetch("${BACKEND_URL}/create-checkout-session", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount, product })
-            });
-            const session = await response.json();
-            stripe.redirectToCheckout({ sessionId: session.id });
+            try {
+                const response = await fetch(`${BACKEND_URL}/create-checkout-session`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount, product }),
+                });
+        
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server error: ${response.status} ${errorText}`);
+                }
+        
+                const session = await response.json();
+                const stripe = Stripe("pk_test_51QxrOUGmxOvkyo74DUxSQsKdmZpNHTjkkbbePuSY2Ed1shgN8T6NKa9GGERNiRVxZdcNJ9y2ax8G1DSgOjKXfkbA009cfswfsU"); // Вставьте ваш API ключ
+        
+                stripe.redirectToCheckout({ sessionId: session.id });
+            } catch (error) {
+                console.error("Payment Error:", error);
+                alert("Ошибка при создании платежа. Попробуйте еще раз.");
+            }
         }
+
     </script>
 
 </body>
